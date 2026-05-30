@@ -32,8 +32,8 @@ class Settings:
     """全局配置单例"""
 
     # ---------- 被测系统 ----------
-    BASE_URL: str = _env("BASE_URL", "https://www.baidu.com")
-
+    # BASE_URL: str = _env("BASE_URL", "https://www.baidu.com")
+    BASE_URL: str = _env("BASE_URL", "https://tester-op-ui.uditech.com.cn/#/login?redirect=/portal")
     # ---------- 浏览器 ----------
     BROWSER: str = _env("BROWSER", "chrome")          # chrome | firefox | edge
     HEADLESS: bool = _env_bool("HEADLESS", False)     # 无头模式

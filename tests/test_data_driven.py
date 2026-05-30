@@ -29,6 +29,7 @@ class TestBaiduSearchDataDriven:
         YAML_DATA,
         ids=[c.get("case_name", c.get("keyword", "unknown")) for c in YAML_DATA],
     )
+    @pytest.mark.skip(reason="不需要")
     def test_search_multiple_keywords(self, driver: WebDriver, case: dict):
         """使用 YAML 数据驱动 — 多关键词搜索验证"""
         keyword = case["keyword"]
@@ -53,6 +54,7 @@ class TestBaiduSearchDataDriven:
 @allure.feature("参数化示例")
 class TestParametrizeInline:
 
+    @pytest.mark.skip(reason="不需要")
     @allure.story("内联参数化")
     @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.regression

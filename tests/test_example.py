@@ -10,12 +10,14 @@ from pages import BaiduHomePage
 
 
 @allure.feature("百度搜索")
+@pytest.mark.skip(reason="不需要")
 class TestBaiduSearch:
 
     @allure.story("首页加载")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.smoke
     @pytest.mark.p0
+    @pytest.mark.skip(reason="不需要")
     def test_home_page_title(self, driver: WebDriver):
         """验证百度首页标题"""
         page = BaiduHomePage(driver).open()
@@ -25,6 +27,7 @@ class TestBaiduSearch:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.smoke
     @pytest.mark.p0
+    @pytest.mark.skip(reason="不需要")
     def test_search_keyword(self, driver: WebDriver):
         """搜索关键词并验证结果页出现"""
         page = BaiduHomePage(driver).open()
@@ -39,6 +42,7 @@ class TestBaiduSearch:
     @allure.severity(allure.severity_level.NORMAL)
     @pytest.mark.regression
     @pytest.mark.p2
+    @pytest.mark.skip(reason="不需要")
     def test_search_input_visible(self, driver: WebDriver):
         """验证搜索框在首页可见"""
         page = BaiduHomePage(driver).open()
@@ -47,7 +51,7 @@ class TestBaiduSearch:
 
 @allure.feature("演示 — 失败场景")
 class TestFailureDemo:
-
+    @pytest.mark.skip(reason="不需要")
     @allure.story("故意失败以演示截图")
     @allure.severity(allure.severity_level.MINOR)
     @pytest.mark.regression

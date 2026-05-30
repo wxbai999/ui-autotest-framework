@@ -1,0 +1,20 @@
+{
+  "test_cases": [
+    {
+      "case_name": "正确账号密码登录",
+      "username": "vince",
+      "password": "vince123",
+      "cer_code": "123",
+      "expect_success": true,
+      "result": "优地科技运维管理系统"
+    },
+    {
+      "case_name": "错误密码登录",
+      "username": "vince",
+      "password": "wrongpassword",
+      "cer_code": "123",
+      "expect_success": false,
+      "result": "密码"
+    }
+  ]
+}
