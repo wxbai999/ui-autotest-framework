@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+venv/
+.venv/
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Testing & Reports
+allure-results/
+allure-report/
+logs/
+screenshots/
+junit-*.xml
+
+# Drivers
+drivers/*.exe
+!drivers/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env

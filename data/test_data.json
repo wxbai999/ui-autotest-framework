@@ -1,0 +1,19 @@
+{
+  "test_cases": [
+    {
+      "case_name": "搜索Python",
+      "keyword": "Python",
+      "expected_in_title": "Python"
+    },
+    {
+      "case_name": "搜索Pytest",
+      "keyword": "Pytest",
+      "expected_in_title": "Pytest"
+    },
+    {
+      "case_name": "搜索Selenium",
+      "keyword": "Selenium WebDriver",
+      "expected_in_title": "Selenium"
+    }
+  ]
+}

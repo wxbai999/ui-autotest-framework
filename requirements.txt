@@ -1,0 +1,27 @@
+# ============================================================
+# UI Automation Test Framework Dependencies
+# Python 3.7+
+# ============================================================
+
+# --- SSL 兼容: Python 3.7 自带的 OpenSSL 版本较低，urllib3 v2 要求 1.1.1+ ---
+urllib3>=1.26,<2.0
+
+# --- Selenium & WebDriver ---
+selenium>=4.0,<4.16
+webdriver-manager>=4.0.0
+
+# --- Test Framework ---
+# 注意: pytest 7.4 起不再支持 Python 3.7，所以上限锁 <7.4
+pytest>=7.0,<7.4
+pytest-xdist>=3.0,<3.6         # 并行执行
+pytest-rerunfailures>=11.0     # 失败重跑
+
+# --- Reporting ---
+allure-pytest>=2.13.0
+
+# --- Data-Driven ---
+pyyaml>=6.0
+openpyxl>=3.1.0
+
+# --- Utilities ---
+python-dotenv>=1.0.0           # .env 文件支持

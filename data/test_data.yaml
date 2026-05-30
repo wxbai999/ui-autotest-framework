@@ -1,0 +1,19 @@
+# YAML 测试数据 — 搜索关键词用例
+# 每项为一个测试场景；字段可自由扩展
+
+test_cases:
+  - case_name: 搜索Python
+    keyword: Python
+    expected_in_title: Python
+
+  - case_name: 搜索Pytest
+    keyword: Pytest
+    expected_in_title: Pytest
+
+  - case_name: 搜索Selenium
+    keyword: Selenium WebDriver
+    expected_in_title: Selenium
+
+  - case_name: 搜索自动化测试
+    keyword: 自动化测试
+    expected_in_title: 自动化测试
