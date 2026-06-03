@@ -1,20 +1,20 @@
 {
   "test_cases": [
     {
-      "case_name": "正确账号密码登录",
+      "case_name": "账号密码为空登录",
       "username": "admin",
       "password": "12345687",
       "cer_code": "123",
       "expect_success": false,
-      "result": "优地科技运维管理系统"
+      "result": "操作失败，密码错误"
     },
     {
       "case_name": "错误密码登录",
-      "username": " ",
+      "username": "admin",
       "password": "wrongpassword",
       "cer_code": "123",
       "expect_success": false,
-      "result": "密码"
+      "result": "操作失败，密码错误"
     }
   ]
 }

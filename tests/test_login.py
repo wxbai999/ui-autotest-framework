@@ -26,7 +26,7 @@ class TestRobotPlatformLogin:
 
     @allure.story("登录验证")
     @allure.severity(allure.severity_level.CRITICAL)
-    @pytest.mark.regression
+    @pytest.mark.smoke
     @pytest.mark.parametrize(
         "case",
         JSON_DATA,
