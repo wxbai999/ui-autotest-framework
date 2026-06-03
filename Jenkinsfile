@@ -52,17 +52,18 @@ pipeline {
         }
 
         // ----------------------------------------------------------
-        // Stage 2: Install Dependencies
+        // Stage 2: Install Dependencies & Download Driver
         // ----------------------------------------------------------
-        // stage('Install Dependencies') {
-        //     steps {
-        //         bat '''
-        //             python --version
-        //             python -m pip install --upgrade pip
-        //             python -m pip install -r requirements.txt
-        //         '''
-        //     }
-        // }
+        stage('Setup') {
+            steps {
+                bat '''
+                    python --version
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt
+                    python scripts/download_driver.py
+                '''
+            }
+        }
 
         // ----------------------------------------------------------
         // Stage 3: Run Tests
