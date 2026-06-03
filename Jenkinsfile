@@ -66,7 +66,11 @@ pipeline {
                 bat 'echo [Setup] Python 版本: && python --version'
                 bat 'echo [Setup] 升级 pip ... && python -m pip install --upgrade pip'
                 bat 'echo [Setup] 安装项目依赖 ... && python -m pip install -r requirements.txt'
-                bat 'echo [Setup] 从 npmmirror 下载 ChromeDriver ... && python scripts/download_driver.py'
+                bat '''
+                    echo [Setup] 从 npmmirror 下载 ChromeDriver ...
+                    python -c "import os,urllib.request,zipfile; os.makedirs('drivers',exist_ok=True); d='drivers\\\\chromedriver.exe'; (print('[Setup] 已存在，跳过') if os.path.exists(d) else (print('[Setup] 下载中...'), urllib.request.urlretrieve('https://mirrors.huaweicloud.com/chromedriver/148.0.7778.97/chromedriver-win64.zip','drivers\\\\_tmp.zip'), zipfile.ZipFile('drivers\\\\_tmp.zip').extractall('drivers'), os.remove('drivers\\\\_tmp.zip'), print('[Setup] 下载完成')))"
+                    echo [Setup] ChromeDriver 就绪
+                '''
                 echo '[Setup] 完成'
             }
         }
