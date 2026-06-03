@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     // ============================================================
+    // 全局选项
+    // ============================================================
+    options {
+        timeout(time: 60, unit: 'MINUTES')   // 整个流水线最长 60 分钟
+        timestamps()                          // 控制台每行带时间戳
+    }
+
+    // ============================================================
     // 参数：手动触发时可选择浏览器
     // ============================================================
     parameters {
@@ -49,6 +57,9 @@ pipeline {
         // Stage 1: Checkout
         // ----------------------------------------------------------
         stage('Checkout') {
+            options {
+                timeout(time: 5, unit: 'MINUTES')
+            }
             steps {
                 echo '========================================='
                 echo '  [Stage 1/3] Checkout — 拉取代码'
@@ -57,12 +68,20 @@ pipeline {
                 echo "当前分支: ${env.BRANCH_NAME}"
                 echo "[Checkout] 完成"
             }
+            post {
+                failure {
+                    echo '[Checkout] 失败! 请检查 Git 仓库地址和凭证'
+                }
+            }
         }
 
         // ----------------------------------------------------------
         // Stage 2: Install Dependencies & Download Driver
         // ----------------------------------------------------------
         stage('Setup') {
+            options {
+                timeout(time: 10, unit: 'MINUTES')
+            }
             steps {
                 echo '========================================='
                 echo '  [Stage 2/3] Setup — 安装依赖'
@@ -72,12 +91,20 @@ pipeline {
 //                 bat 'echo [Setup] 安装项目依赖 ... && python -m pip install -r requirements.txt'
                 echo '[Setup] 完成'
             }
+            post {
+                failure {
+                    echo '[Setup] 失败! 请检查 Python 环境或 requirements.txt'
+                }
+            }
         }
 
         // ----------------------------------------------------------
         // Stage 3: Run Tests
         // ----------------------------------------------------------
         stage('Run Tests') {
+            options {
+                timeout(time: 30, unit: 'MINUTES')
+            }
             steps {
                 echo '========================================='
                 echo "  [Stage 3/3] Run Tests — 浏览器=${params.BROWSER} | 标记=${params.TEST_MARKER} | Workers=${params.WORKERS}"
@@ -86,17 +113,22 @@ pipeline {
                     if (params.TEST_MARKER == 'smoke' || params.TEST_MARKER == 'all') {
                         echo '[Run Tests] 开始执行冒烟测试 ...'
                         bat """
-                            python -m pytest tests/ -m smoke --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3
+                            python -m pytest tests/ -m smoke --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 -v --tb=long
                         """
                         echo '[Run Tests] 冒烟测试 完成'
                     }
                     if (params.TEST_MARKER == 'regression' || params.TEST_MARKER == 'all') {
                         echo '[Run Tests] 开始执行回归测试 ...'
                         bat """
-                            python -m pytest tests/ -m regression --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3
+                            python -m pytest tests/ -m regression --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 -v --tb=long
                         """
                         echo '[Run Tests] 回归测试 完成'
                     }
+                }
+            }
+            post {
+                failure {
+                    echo '[Run Tests] 测试失败! 请查看上方 pytest 报错和 Allure 报告中的截图'
                 }
             }
         }
