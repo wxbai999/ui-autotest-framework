@@ -54,15 +54,15 @@ pipeline {
         // ----------------------------------------------------------
         // Stage 2: Install Dependencies
         // ----------------------------------------------------------
-        stage('Install Dependencies') {
-            steps {
-                bat '''
-                    python --version
-                    python -m pip install --upgrade pip
-                    python -m pip install -r requirements.txt
-                '''
-            }
-        }
+        // stage('Install Dependencies') {
+        //     steps {
+        //         bat '''
+        //             python --version
+        //             python -m pip install --upgrade pip
+        //             python -m pip install -r requirements.txt
+        //         '''
+        //     }
+        // }
 
         // ----------------------------------------------------------
         // Stage 3: Run Tests
