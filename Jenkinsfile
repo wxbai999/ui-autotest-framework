@@ -31,6 +31,10 @@ pipeline {
         // 被测系统地址
         BASE_URL = 'https://www.baidu.com'
 
+        // Driver 路径 — 指向本地固定目录，需提前放入 chromedriver.exe
+        // 首次运行前执行: mkdir C:\jenkins-drivers && copy chromedriver.exe C:\jenkins-drivers\
+        CHROME_DRIVER_PATH = "C:\\jenkins-drivers\\chromedriver.exe"
+
         // Selenium Grid（如果使用）
         // GRID_ENABLED = 'true'
         // GRID_URL = 'http://selenium-grid:4444'
@@ -61,16 +65,11 @@ pipeline {
         stage('Setup') {
             steps {
                 echo '========================================='
-                echo '  [Stage 2/3] Setup — 安装依赖 & 下载驱动'
+                echo '  [Stage 2/3] Setup — 安装依赖'
                 echo '========================================='
 //                 bat 'echo [Setup] Python 版本: && python --version'
 //                 bat 'echo [Setup] 升级 pip ... && python -m pip install --upgrade pip'
 //                 bat 'echo [Setup] 安装项目依赖 ... && python -m pip install -r requirements.txt'
-                bat '''
-                    echo [Setup] 从 huaweimirror 下载 ChromeDriver ...
-                    python -c "import os,urllib.request,zipfile; os.makedirs('drivers',exist_ok=True); d='drivers\\\\chromedriver.exe'; (print('[Setup] 已存在，跳过') if os.path.exists(d) else (print('[Setup] 下载中...'), urllib.request.urlretrieve('https://mirrors.huaweicloud.com/chromedriver/148.0.7778.97/chromedriver-win64.zip','drivers\\\\_tmp.zip'), zipfile.ZipFile('drivers\\\\_tmp.zip').extractall('drivers'), os.remove('drivers\\\\_tmp.zip'), print('[Setup] 下载完成')))"
-                    echo [Setup] ChromeDriver 就绪
-                '''
                 echo '[Setup] 完成'
             }
         }
