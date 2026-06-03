@@ -86,7 +86,7 @@ pipeline {
                     if (params.TEST_MARKER == 'smoke' || params.TEST_MARKER == 'all') {
                         echo '[Run Tests] 开始执行冒烟测试 ...'
                         bat """
-                            python -m pytest tests/ -m smoke --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 --junitxml=junit-smoke.xml
+                            python -m pytest tests/ -m smoke --browser=${BROWSER} --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 --junitxml=junit-smoke.xml
                         """
                         echo '[Run Tests] 冒烟测试 完成'
                     }
