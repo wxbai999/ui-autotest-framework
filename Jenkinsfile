@@ -56,67 +56,35 @@ pipeline {
         // ----------------------------------------------------------
         stage('Install Dependencies') {
             steps {
-                sh '''
+                bat '''
                     python --version
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt
                 '''
             }
         }
 
         // ----------------------------------------------------------
-        // Stage 3: Run Tests（并行分组）
+        // Stage 3: Run Tests
         // ----------------------------------------------------------
         stage('Run Tests') {
-            parallel {
-                // --- 冒烟测试 ---
-                stage('Smoke Tests') {
-                    when {
-                        expression { params.TEST_MARKER in ['smoke', 'all'] }
+            steps {
+                script {
+                    if (params.TEST_MARKER == 'smoke' || params.TEST_MARKER == 'all') {
+                        bat """
+                            python -m pytest tests/ -m smoke --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 --junitxml=junit-smoke.xml
+                        """
                     }
-                    steps {
-                        sh '''
-                            pytest tests/ \
-                                -m "smoke" \
-                                --browser=${BROWSER} \
-                                --headless \
-                                --workers=${WORKERS} \
-                                --alluredir=${ALLURE_RESULTS_DIR}/smoke \
-                                --reruns=2 \
-                                --reruns-delay=3 \
-                                --junitxml=junit-smoke.xml
-                        '''
-                    }
-                    post {
-                        always {
-                            junit 'junit-smoke.xml'
-                        }
+                    if (params.TEST_MARKER == 'regression' || params.TEST_MARKER == 'all') {
+                        bat """
+                            python -m pytest tests/ -m regression --browser=${BROWSER} --headless --workers=${WORKERS} --alluredir=${ALLURE_RESULTS_DIR} --reruns=2 --reruns-delay=3 --junitxml=junit-regression.xml
+                        """
                     }
                 }
-
-                // --- 回归测试 ---
-                stage('Regression Tests') {
-                    when {
-                        expression { params.TEST_MARKER in ['regression', 'all'] }
-                    }
-                    steps {
-                        sh '''
-                            pytest tests/ \
-                                -m "regression" \
-                                --browser=${BROWSER} \
-                                --headless \
-                                --workers=${WORKERS} \
-                                --alluredir=${ALLURE_RESULTS_DIR}/regression \
-                                --reruns=2 \
-                                --reruns-delay=3 \
-                                --junitxml=junit-regression.xml
-                        '''
-                    }
-                    post {
-                        always {
-                            junit 'junit-regression.xml'
-                        }
-                    }
+            }
+            post {
+                always {
+                    junit 'junit-*.xml'
                 }
             }
         }
@@ -127,25 +95,10 @@ pipeline {
     // ============================================================
     post {
         always {
-            script {
-                // 合并所有 Allure 结果目录为一个
-                sh '''
-                    mkdir -p ${ALLURE_RESULTS_DIR}
-                    if [ -d ${ALLURE_RESULTS_DIR}/smoke ]; then
-                        cp -r ${ALLURE_RESULTS_DIR}/smoke/* ${ALLURE_RESULTS_DIR}/
-                    fi
-                    if [ -d ${ALLURE_RESULTS_DIR}/regression ]; then
-                        cp -r ${ALLURE_RESULTS_DIR}/regression/* ${ALLURE_RESULTS_DIR}/
-                    fi
-                '''
-            }
             allure includeProperties: false,
                    results: [[path: "${ALLURE_RESULTS_DIR}"]]
         }
 
-        // 清理工作空间
-        cleanup {
-            cleanWs()
-        }
+
     }
 }
